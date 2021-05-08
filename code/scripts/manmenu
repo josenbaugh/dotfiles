@@ -1,0 +1,4 @@
+#!/bin/sh
+
+prog=$(man -k . | sed -E 's/\([0-9]\).+?(- )/- /' | dmenu -i | awk '{print $1}')
+st -t "man $prog" -g 120x34+258+148 -i -e man $prog

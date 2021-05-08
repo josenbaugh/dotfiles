@@ -1,0 +1,15 @@
+#!/bin/sh
+
+case $1 in
+	"c")
+		file=$(cat <( rg --files --hidden --no-ignore --max-depth=1 ~/.*) <(rg --files ~/.config) <(rg --files ~/code) | fzf)
+		$EDITOR $file
+		cd $(sed -E 's/([^\/]*$)//' <<< $file)
+		;;
+	"s")
+		rg --files --hidden --no-ignore ~/code/scripts | fzf | xargs -r $EDITOR
+		;;
+	*)
+		[ -n "$1" ] && rg --files --hidden --no-ignore "$1" | fzf | xargs -r $EDITOR || rg --files --hidden --no-ignore | fzf | xargs -r $EDITOR
+		;;
+esac

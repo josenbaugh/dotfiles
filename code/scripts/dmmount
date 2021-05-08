@@ -1,0 +1,16 @@
+#!/bin/sh
+
+[[ $1 = '-l' ]] && { lsblk -lp | grep -E "part $" | awk '{print $1 " (" $4 ")"}' | tac | dmenu -p "Drives available to mount:" ; exit 0; }
+
+driveDisplay=$(lsblk -lp | grep -E "part $" | awk '{print $1 " (" $4 ")"}' | tac | dmenu -p "Which drive do you want to mount?")
+drive=$(echo "${driveDisplay%% *}")
+[ -z $drive ] && exit 1
+[ $(ls $drive) ] || { notify-send "$drive does not exist" ; exit 1; }
+
+mountpoint=$(ls -d /mnt/* | dmenu -p "Where do you wanna mount it?")
+[ -z $mountpoint ] && exit 1
+[ -d "$mountpoint" ] || { [ "$(printf "No\nYes" | dmenu -i -p "$mountpoint does not exist. Create it?")" = "Yes" ] && { mkdir $mountpoint || { sudo -A mkdir $mountpoint || { notify-send "Unable to create $mountpoint"; exit 1; } } } || exit 0;  }
+
+[ "$(printf "No\nYes" | dmenu -i -p "Mount $driveDisplay on $mountpoint?")" = "Yes" ] || exit 0
+
+sudo -A mount $drive $mountpoint && notify-send "✅ Successfully mounted $driveDisplay on $mountpoint" || notify-send "❗ Failed to mount $driveDisplay on $mountpoint"

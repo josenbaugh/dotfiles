@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# do click stuff
+case $BLOCK_BUTTON in
+	#left click
+	1) ;;
+	#middle click
+	2) ;;
+	#right click
+	3) ;;
+	#scroll up
+	4) ;; 
+	#scroll down
+	5) ;; 
+	#shift left click
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+battery="/sys/class/power_supply/BAT1"
+
+case "$(cat "$battery/status")" in
+	"Full") status="⚡" ;;
+	"Discharging") status="🔋" ;;
+	"Charging") status="🔌" ;;
+	"Not charging") status="🛑" ;;
+	"Unknown") status="♻️" ;;
+esac
+
+capacity=$(cat $battery/capacity)
+
+# Will make a warn variable if discharging and low
+[ "$status" = "🔋" ] && [ "$capacity" -le 25 ] && warn="❗"
+
+printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cmd=$(cat ~/.zsh_history | awk -F ';' '{print $2}' | fzf)
+$cmd

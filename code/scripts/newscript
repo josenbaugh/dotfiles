@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -z $1 ]; then
+	echo "Input script name"
+	exit 1
+fi
+
+script=$(realpath ~/code/scripts/$1)
+linkpath=$(realpath -s ~/.local/bin/$1)
+
+if [ -f $script ]; then
+	chmod +x $script
+	ln -sf  $script $linkpath
+else
+	touch $script
+	printf "#!/bin/sh\n\n\n" > $script
+	chmod +x $script
+
+	ln -s  $script $linkpath
+fi
+
+$EDITOR $script

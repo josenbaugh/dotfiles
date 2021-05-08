@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# do click stuff
+case $BLOCK_BUTTON in
+	#left click
+	1) ;;
+	#middle click
+	2) ;;
+	#right click
+	3) ;;
+	#scroll up
+	4) xbacklight -inc 2.5 ;; 
+	#scroll down
+	5) xbacklight -dec 2.5 ;; 
+	#shift left click
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+backlightPercent=$(xbacklight -get)
+printf "💡%d%%" "$backlightPercent"

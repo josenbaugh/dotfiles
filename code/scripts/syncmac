@@ -1,0 +1,8 @@
+#!/bin/sh
+
+arg=$1
+
+if [ -z "$arg" ]; then
+	arg=$PWD
+fi
+rsync -auv $arg jaosenbaugh@192.168.1.42:/Users/jaosenbaugh/code/

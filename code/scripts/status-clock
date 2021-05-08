@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# do click stuff
+case $BLOCK_BUTTON in
+	#left click
+	1) calendar;;
+	#middle click
+	2) ;;
+	#right click
+	3) ;;
+	#scroll up
+	4) ;; 
+	#scroll down
+	5) ;; 
+	#shift left click
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+date=$(date +'%a, %b %d %I:%M %p')
+
+printf "%s" "$date"

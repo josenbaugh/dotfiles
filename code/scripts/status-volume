@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# do click stuff
+case $BLOCK_BUTTON in
+	#left click
+	1) pavucontrol ;;
+	#middle click
+	2) amixer -q set Master toggle ;;
+	#right click
+	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
+- Middle click to mute.
+- Scroll to change." ;;
+	#scroll up
+	4) amixer -q set Master 2%+ unmute ;; 
+	#scroll down
+	5) amixer -q set Master 2%- unmute ;; 
+	#shift left click
+	6) setsid "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+[ $(pacmd list-sinks | awk '/muted/ { print $2 }') == "yes" ] && echo 🔇 && exit
+
+vol=$(amixer -D pulse get Master | awk -F 'Left:|[][]' 'BEGIN {RS=""}{ print $3 }' | sed "s/\%//g")
+
+if [ "$vol" -gt "70" ]; then
+	icon="🔊"
+elif [ "$vol" -lt "30" ]; then
+	icon="🔈"
+else
+	icon="🔉"
+fi
+
+printf "%s%s%%" "$icon" "$vol"

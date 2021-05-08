@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[[ $1 == '-l' ]] && { lsblk -lp | grep -E "part \/" | awk '{print $1 " (" $4 ") at " $7}' | tac | dmenu -p "Drives mounted:" ; exit 0; }
+driveDisplay=$(lsblk -lp | grep -E "part \/" | awk '{print $1 " (" $4 ") at " $7}' | tac | dmenu -p "Which drive do you want to unmount?")
+drive=$(echo "${driveDisplay%% *}")
+[ -z $drive ] && exit 1
+[ $(ls $drive) ] || { notify-send "$drive does not exist" ; exit 1; }
+
+[ "$(printf "No\nYes" | dmenu -i -p "Unmount Mount $driveDisplay?")" = "Yes" ] || exit 0
+
+sudo -A umount $drive && notify-send "✅ Successfully unmounted $drive" || notify-send "❗ Failed to unmount $drive"
