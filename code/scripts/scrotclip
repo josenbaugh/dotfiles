@@ -1,9 +1,24 @@
 #!/bin/bash
+cliponly=false
 
-# Maim version
-maim -s | xclip -selection clipboard -target image/png
+while getopts ":hc" option; do
+  case $option in
+    h) echo "usage: $0 [-h] [-c] directory "; exit ;;
+    c) cliponly=true ;;
+    ?) echo "error: option -$OPTARG is not implemented"; exit ;;
+  esac
+done
 
-# Scrot version
-# scrot -s /tmp/foo.png
-# xclip -selection clipboard -t image/png -i /tmp/foo.png
-# rm /tmp/foo.png
+# remove the options from the positional parameters
+shift $(( OPTIND - 1 ))
+
+if ($cliponly) then
+	# only pipe to clipboard
+	maim -s | xclip -selection clipboard -target image/png
+else
+	# put in file as well as clipboard
+	file="$1/$(date +%s).png"
+	maim -s | tee $file | xclip -selection clipboard -t image/png
+	echo $file
+fi
+
