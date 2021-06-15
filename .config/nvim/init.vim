@@ -26,7 +26,11 @@ Plug 'burnettk/vim-angular'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/javascript-libraries-syntax.vim'
 
+" markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
 call plug#end()
+let g:mkdp_browser = 'surf'
 
 syntax on
 set noerrorbells
@@ -67,6 +71,12 @@ if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+
+" put filepath in the title
+set title
+set titlestring=nvim\ %F
+
 
 " manual filetype stuff
 au BufNewFile,BufRead *.groff set filetype=groff
