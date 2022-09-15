@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ngrok http --host-header=local-dev.phoneburner.com --subdomain=josenbaugh local-dev.phoneburner.com:80

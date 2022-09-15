@@ -6,4 +6,4 @@ for f in *.mp4 ; do
 done
 
 ffmpeg -f concat -safe 0 -i fileList.txt -c copy mergedVideo.mp4
-rm fileList.txt
+# rm fileList.txt

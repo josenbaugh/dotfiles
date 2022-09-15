@@ -16,7 +16,7 @@ case $BLOCK_BUTTON in
 	6) setsid "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-packages=$(sudo pacman -Syu -p | wc -l)
+packages=$(yay -Syu -p | wc -l)
 num=$(expr $packages - 5)
 
 echo "📦$num"

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+icon="📶"
+offline="❌"
+
+networkstatus="$( networkctl --lines=0 status wlan0 | grep "Online state\|WiFi" | sed "s/.*: //" | sed "s/(.*)//")"
+onlinestatus=$(echo $networkstatus | cut -f1 -d" ")
+ssid=$(echo $networkstatus | cut -f2 -d" ")
+
+if [ "$onlinestatus" == "online" ]; then
+    echo "$icon $ssid"
+else
+    echo "$icon $offline"
+fi
+
+# do click stuff
+case $BLOCK_BUTTON in
+	#left click
+	1)  ;;
+	#middle click
+	2) ;;
+	#right click
+	3) st -t "iwctl" -g 120x34+258+148 -i -e iwctl ;;
+	#scroll up
+	4) ;; 
+	#scroll down
+	5) ;; 
+	#shift left click
+	6) setsid "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac

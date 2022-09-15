@@ -15,7 +15,6 @@ else
 	touch $script
 	printf "#!/bin/sh\n\n\n" > $script
 	chmod +x $script
-
 	ln -s  $script $linkpath
 fi
 

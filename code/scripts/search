@@ -3,8 +3,8 @@
 case $1 in
 	"c")
 		file=$(cat <( rg --files --hidden --no-ignore --max-depth=1 ~/.*) <(rg --files ~/.config) <(rg --files ~/code) | fzf)
-		$EDITOR $file
 		cd $(sed -E 's/([^\/]*$)//' <<< $file)
+		$EDITOR $file
 		;;
 	"s")
 		rg --files --hidden --no-ignore ~/code/scripts | fzf | xargs -r $EDITOR
